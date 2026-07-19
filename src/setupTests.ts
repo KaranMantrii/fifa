@@ -58,7 +58,8 @@ interface WorkerResponse {
 
 class WorkerMock {
   url: string;
-  onmessage: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onmessage: ((ev: any) => void) | null = null;
   listeners: Record<string, Function[]> = {};
 
   constructor(stringUrl: string) {
@@ -90,14 +91,16 @@ class WorkerMock {
   
   terminate() {}
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addEventListener(event: string, callback: any) {
     if (!this.listeners[event]) this.listeners[event] = [];
     this.listeners[event].push(callback);
   }
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   removeEventListener(event: string, callback: any) {
     if (this.listeners[event]) {
-      this.listeners[event] = this.listeners[event].filter(cb => cb !== callback);
+      this.listeners[event] = this.listeners[event].filter((cb: unknown) => cb !== callback);
     }
   }
 }

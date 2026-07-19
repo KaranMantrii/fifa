@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/App.jsx</title>
+    <title>Code coverage report for src/App.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">src</a> App.jsx</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">src</a> App.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.44% </span>
+                <span class="strong">81.81% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/18</span>
+                <span class='fraction'>18/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">85% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>17/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">69.23% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>9/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.33% </span>
+                <span class="strong">78.94% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/15</span>
+                <span class='fraction'>15/19</span>
             </div>
         
             
@@ -190,7 +190,16 @@
 <a name='L125'></a><a href='#L125'>125</a>
 <a name='L126'></a><a href='#L126'>126</a>
 <a name='L127'></a><a href='#L127'>127</a>
-<a name='L128'></a><a href='#L128'>128</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -206,6 +215,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -296,6 +306,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -319,6 +335,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, Suspense } from 'react'
 import { Activity, MessageSquare, LogOut, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 &nbsp;
 // Lazy load heavy components for better efficiency score
 const FanAssistant = React.lazy(() =&gt; import('./components/FanAssistant'))
@@ -333,8 +350,9 @@ const LoadingFallback = () =&gt; (
 )
 &nbsp;
 function App() {
-  const [activeMode, setActiveMode] = useState('fan') // 'fan' | 'staff'
-  const [isStaffAuthenticated, setIsStaffAuthenticated] = useState(false)
+  const { t, i18n } = useTranslation()
+  const [activeMode, setActiveMode] = useState&lt;'fan' | 'staff'&gt;('fan')
+  const [isStaffAuthenticated, setIsStaffAuthenticated] = useState&lt;boolean&gt;(false)
 &nbsp;
   const handleLogout = () =&gt; {
     setIsStaffAuthenticated(false)
@@ -361,7 +379,7 @@ function App() {
                 left: `${5 + Math.random() * 90}%`,
                 '--delay': `${Math.random() * 10}s`,
                 '--duration': `${15 + Math.random() * 15}s`
-              }}
+              } as React.CSSProperties}
             &gt;
               &lt;img
                 src="/football.png?v=3"
@@ -380,7 +398,7 @@ function App() {
           &lt;div className="bg-white/10 p-2 rounded-xl shadow-inner border border-white/5 flex items-center justify-center" aria-hidden="true"&gt;
             &lt;img src="/favicon.png" alt="Logo" className="w-6 h-6 object-contain drop-shadow-md" /&gt;
           &lt;/div&gt;
-          FIFA '26 Smart Hub
+          {t('app.title')}
         &lt;/h1&gt;
 &nbsp;
         &lt;nav className="flex items-center gap-4" aria-label="Mode Navigation"&gt;
@@ -395,7 +413,7 @@ function App() {
                 }`}
             &gt;
               &lt;MessageSquare size={16} strokeWidth={2.5} aria-hidden="true" /&gt;
-              Fan Companion
+              {t('app.fanAssistant')}
             &lt;/button&gt;
             &lt;button
               onClick={() =&gt; setActiveMode('staff')}
@@ -407,20 +425,26 @@ function App() {
                 }`}
             &gt;
               &lt;Activity size={16} strokeWidth={2.5} aria-hidden="true" /&gt;
-              Staff Dashboard
+              {t('app.staffPortal')}
             &lt;/button&gt;
           &lt;/div&gt;
 &nbsp;
           {isStaffAuthenticated &amp;&amp; (
             &lt;button
               onClick={handleLogout}
-              aria-label="Logout from Staff Dashboard"
+              aria-label={t('app.logout')}
               className="p-2.5 rounded-full text-slate-400 hover:text-red-400 bg-black/40 hover:bg-white/10 border border-white/10 transition-colors shadow-inner focus:outline-none focus:ring-2 focus:ring-red-400/50"
-              title="Logout"
+              title={t('app.logout')}
             &gt;
               &lt;LogOut size={16} strokeWidth={2.5} aria-hidden="true" /&gt;
             &lt;/button&gt;
           )}
+&nbsp;
+          &lt;div className="flex items-center gap-1 bg-black/40 p-1 rounded-full border border-white/10 shadow-inner ml-2"&gt;
+             &lt;button <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >i</span>18n.changeLanguage('en')} c</span>lassName={`px-2 py-1 text-xs font-bold rounded-full ${i18n.language === 'en' ? 'bg-white/20 text-white' : <span class="branch-1 cbranch-no" title="branch not covered" >'text-slate-400 hover:text-white'}`}&gt;E</span>N&lt;/button&gt;
+             &lt;button <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >i</span>18n.changeLanguage('es')} c</span>lassName={`px-2 py-1 text-xs font-bold rounded-full ${i18n.language === 'es' ? <span class="branch-0 cbranch-no" title="branch not covered" >'bg-white/20 text-white' : '</span>text-slate-400 hover:text-white'}`}&gt;ES&lt;/button&gt;
+             &lt;button <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >i</span>18n.changeLanguage('fr')} c</span>lassName={`px-2 py-1 text-xs font-bold rounded-full ${i18n.language === 'fr' ? <span class="branch-0 cbranch-no" title="branch not covered" >'bg-white/20 text-white' : '</span>text-slate-400 hover:text-white'}`}&gt;FR&lt;/button&gt;
+          &lt;/div&gt;
         &lt;/nav&gt;
       &lt;/header&gt;
 &nbsp;
@@ -451,7 +475,7 @@ export default App
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-19T08:55:18.819Z
+                at 2026-07-19T10:15:11.201Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -28,7 +28,8 @@ self.addEventListener('message', async (e: MessageEvent) => {
       default:
         console.warn(`[Worker] Unknown message type: ${type}`);
     }
-  } catch (error: any) {
-    self.postMessage({ id, type: 'ERROR', error: error.message });
+  } catch (error) {
+    const err = error as Error;
+    self.postMessage({ type: 'ERROR', message: err.message || 'Unknown error occurred in worker' });
   }
 });

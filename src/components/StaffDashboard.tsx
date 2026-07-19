@@ -137,7 +137,7 @@ export default function StaffDashboard() {
       ws.removeEventListener('message', handleMessage);
       ws.close();
     };
-  }, [deployments]);
+  }, [deployments, region]);
 
   const handleRegionChange = (newRegion: 'USA' | 'MEX' | 'CAN') => {
     setRegion(newRegion);
@@ -169,21 +169,27 @@ export default function StaffDashboard() {
               <p className="text-slate-400 text-sm mt-1">Cross-border Venue Analytics & Security Overview</p>
             </div>
             
-            <div className="flex gap-2 bg-black/40 p-1 rounded-lg border border-white/10">
+            <div className="flex gap-2 bg-black/40 p-1 rounded-lg border border-white/10" role="group" aria-label="Region Selector">
               <button 
                 onClick={() => handleRegionChange('USA')}
+                aria-label="Switch to USA Node"
+                aria-pressed={region === 'USA'}
                 className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${region === 'USA' ? 'bg-fifa-blue text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
               >
                 USA 🇺🇸
               </button>
               <button 
                 onClick={() => handleRegionChange('MEX')}
+                aria-label="Switch to Mexico Node"
+                aria-pressed={region === 'MEX'}
                 className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${region === 'MEX' ? 'bg-fifa-green text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
               >
                 MEX 🇲🇽
               </button>
               <button 
                 onClick={() => handleRegionChange('CAN')}
+                aria-label="Switch to Canada Node"
+                aria-pressed={region === 'CAN'}
                 className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${region === 'CAN' ? 'bg-fifa-amber text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
               >
                 CAN 🇨🇦
