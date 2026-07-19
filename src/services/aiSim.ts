@@ -52,6 +52,9 @@ export async function simulateAIResponse(message: string): Promise<string> {
   if (lowerMsg.includes('festival') || lowerMsg.includes('fan')) {
     return "The official FIFA Fan Festival™ is happening downtown! Shuttles depart every 10 minutes from the East Transport Hub just outside the stadium.";
   }
+  if (lowerMsg.includes('sensory') || lowerMsg.includes('wheelchair') || lowerMsg.includes('accessible')) {
+    return "The nearest Sensory Room is located at Section 120 (a 2-minute walk). Wheelchair accessible routes and elevators are available via Gate 2 and Gate 4. Would you like me to dispatch an accessibility host to assist you?";
+  }
 
   return "I'm your FIFA '26 Assistant! I can help you find food, merchandise, restrooms, or navigate the stadium. How can I assist you today?";
 }
@@ -100,9 +103,10 @@ export function getStaffInsights() {
 
 export function getStadiumMetrics() {
   return {
-    occupancy: 82,
-    avgWaitTime: 8,
-    incidents: 3,
-    sentiment: "94%"
+    occupancy: 78,
+    avgWaitTime: 4.2,
+    incidents: 2,
+    sentiment: 'Positive',
+    ecoScore: 92
   };
 }

@@ -13,17 +13,46 @@ export default function StaffDashboard() {
   const [selectedSector, setSelectedSector] = useState<SectorData | null>(null);
   const [deployments, setDeployments] = useState<string[]>([]);
   const [showCameras, setShowCameras] = useState<boolean>(false);
+  const [region, setRegion] = useState<'USA' | 'MEX' | 'CAN'>('USA');
 
-  const [stadiumData, setStadiumData] = useState<StadiumData>({
-    north: { id: 'north', name: 'MetLife North (NY/NJ)', occupancy: 65, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '2m' },
-    south: { id: 'south', name: 'MetLife South', occupancy: 85, status: 'Busy', color: '#f59e0b', incidents: 1, waitTime: '8m' },
-    east:  { id: 'east', name: 'Azteca East (MEX)', occupancy: 95, status: 'Alert', color: '#ef4444', incidents: 2, waitTime: '15m' },
-    west:  { id: 'west', name: 'BMO Field West (TOR)', occupancy: 55, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
-    g1:    { id: 'g1', name: 'Gate 1', occupancy: 30, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '0m' },
-    g2:    { id: 'g2', name: 'Gate 2', occupancy: 70, status: 'Busy', color: '#f59e0b', incidents: 0, waitTime: '5m' },
-    g3:    { id: 'g3', name: 'Gate 3', occupancy: 98, status: 'Alert', color: '#ef4444', incidents: 1, waitTime: '22m' },
-    g4:    { id: 'g4', name: 'Gate 4', occupancy: 40, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
-  });
+  const getStadiumDataForRegion = (reg: string): StadiumData => {
+    if (reg === 'MEX') {
+      return {
+        north: { id: 'north', name: 'Azteca North', occupancy: 70, status: 'Busy', color: '#f59e0b', incidents: 1, waitTime: '6m' },
+        south: { id: 'south', name: 'Azteca South', occupancy: 95, status: 'Alert', color: '#ef4444', incidents: 2, waitTime: '15m' },
+        east:  { id: 'east', name: 'Akron East', occupancy: 55, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '2m' },
+        west:  { id: 'west', name: 'Akron West', occupancy: 40, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
+        g1:    { id: 'g1', name: 'Gate 1', occupancy: 30, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '0m' },
+        g2:    { id: 'g2', name: 'Gate 2', occupancy: 70, status: 'Busy', color: '#f59e0b', incidents: 0, waitTime: '5m' },
+        g3:    { id: 'g3', name: 'Gate 3', occupancy: 88, status: 'Busy', color: '#f59e0b', incidents: 1, waitTime: '12m' },
+        g4:    { id: 'g4', name: 'Gate 4', occupancy: 40, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
+      };
+    }
+    if (reg === 'CAN') {
+      return {
+        north: { id: 'north', name: 'BMO Field North', occupancy: 60, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '4m' },
+        south: { id: 'south', name: 'BMO Field South', occupancy: 80, status: 'Busy', color: '#f59e0b', incidents: 1, waitTime: '7m' },
+        east:  { id: 'east', name: 'BC Place East', occupancy: 45, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '2m' },
+        west:  { id: 'west', name: 'BC Place West', occupancy: 35, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
+        g1:    { id: 'g1', name: 'Gate A', occupancy: 20, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '0m' },
+        g2:    { id: 'g2', name: 'Gate B', occupancy: 50, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '3m' },
+        g3:    { id: 'g3', name: 'Gate C', occupancy: 40, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '2m' },
+        g4:    { id: 'g4', name: 'Gate D', occupancy: 30, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
+      };
+    }
+    return {
+      north: { id: 'north', name: 'MetLife North (NY/NJ)', occupancy: 65, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '2m' },
+      south: { id: 'south', name: 'MetLife South', occupancy: 85, status: 'Busy', color: '#f59e0b', incidents: 1, waitTime: '8m' },
+      east:  { id: 'east', name: 'SoFi East (LA)', occupancy: 95, status: 'Alert', color: '#ef4444', incidents: 2, waitTime: '15m' },
+      west:  { id: 'west', name: 'AT&T West (DAL)', occupancy: 55, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
+      g1:    { id: 'g1', name: 'Gate 1', occupancy: 30, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '0m' },
+      g2:    { id: 'g2', name: 'Gate 2', occupancy: 70, status: 'Busy', color: '#f59e0b', incidents: 0, waitTime: '5m' },
+      g3:    { id: 'g3', name: 'Gate 3', occupancy: 98, status: 'Alert', color: '#ef4444', incidents: 1, waitTime: '22m' },
+      g4:    { id: 'g4', name: 'Gate 4', occupancy: 40, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
+    };
+  };
+
+  const [stadiumData, setStadiumData] = useState<StadiumData>(getStadiumDataForRegion('USA'));
 
   const handleSectorClick = useCallback((sectorKey: string) => {
     setStadiumData((prevData) => {
@@ -110,6 +139,12 @@ export default function StaffDashboard() {
     };
   }, [deployments]);
 
+  const handleRegionChange = (newRegion: 'USA' | 'MEX' | 'CAN') => {
+    setRegion(newRegion);
+    setStadiumData(getStadiumDataForRegion(newRegion));
+    setSelectedSector(null);
+  };
+
   if (!metrics) return null;
 
   return (
@@ -123,16 +158,32 @@ export default function StaffDashboard() {
 
         {/* Stadium Map Visualization */}
         <div className="flex-1 glass-panel rounded-[1.5rem] p-6 md:p-8 flex flex-col relative shadow-2xl">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
             {/* FIFA 26 specific context */}
             <div>
               <h3 className="font-bold text-xl font-display tracking-tight text-white">FIFA World Cup 26™ Global Command Center</h3>
               <p className="text-slate-400 text-sm mt-1">Cross-border Venue Analytics & Security Overview</p>
             </div>
-            <div className="flex gap-4 text-xs font-bold text-slate-300" aria-hidden="true">
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-fifa-green shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span> Optimal</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-fifa-amber shadow-[0_0_8px_rgba(245,158,11,0.6)]"></span> Busy</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span> Congested</span>
+            
+            <div className="flex gap-2 bg-black/40 p-1 rounded-lg border border-white/10">
+              <button 
+                onClick={() => handleRegionChange('USA')}
+                className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${region === 'USA' ? 'bg-fifa-blue text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+              >
+                USA 🇺🇸
+              </button>
+              <button 
+                onClick={() => handleRegionChange('MEX')}
+                className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${region === 'MEX' ? 'bg-fifa-green text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+              >
+                MEX 🇲🇽
+              </button>
+              <button 
+                onClick={() => handleRegionChange('CAN')}
+                className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${region === 'CAN' ? 'bg-fifa-amber text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+              >
+                CAN 🇨🇦
+              </button>
             </div>
           </div>
           

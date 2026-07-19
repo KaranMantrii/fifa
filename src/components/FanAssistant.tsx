@@ -9,7 +9,7 @@ import fifaBg from '../../Assets/fifa.png';
 const SUGGESTIONS = [
   { icon: <Coffee size={14} aria-hidden="true" />, text: "Where's the nearest food?" },
   { icon: <MapPin size={14} aria-hidden="true" />, text: "Where is the FIFA Fan Festival™?" },
-  { icon: <Info size={14} aria-hidden="true" />, text: "Where can I buy official merch?" }
+  { icon: <Info size={14} aria-hidden="true" />, text: "Where is the nearest sensory room?" }
 ];
 
 // Zod Schema for strict input validation

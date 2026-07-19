@@ -2,8 +2,9 @@ import { Zap } from 'lucide-react';
 import React from 'react';
 
 export interface Insight {
-  id: number;
-  type: 'warning' | 'info' | 'success';
+  id: string | number;
+  type?: 'warning' | 'info' | 'success';
+  severity?: 'high' | 'medium' | 'low';
   title: string;
   description: string;
   time: string;
@@ -36,15 +37,14 @@ const InsightPanel: React.FC<InsightPanelProps> = ({ insights }) => {
             <div 
               key={insight.id} 
               className={`p-4 rounded-xl border bg-black/20 relative overflow-hidden group hover:bg-black/40 transition-colors
-                ${insight.type === 'warning' ? 'border-red-500/30' : 
-                  insight.type === 'info' ? 'border-fifa-amber/30' : 
+                ${(insight.severity === 'high' || insight.type === 'warning') ? 'border-red-500/30' : 
+                  (insight.severity === 'medium' || insight.type === 'info') ? 'border-fifa-amber/30' : 
                   'border-fifa-green/30'}`}
             >
               <div className={`absolute top-0 left-0 w-1 h-full 
-                ${insight.type === 'warning' ? 'bg-red-500' : 
-                  insight.type === 'info' ? 'bg-fifa-amber' : 
-                  'bg-fifa-green'}`} aria-hidden="true">
-              </div>
+                ${(insight.severity === 'high' || insight.type === 'warning') ? 'bg-red-500' : 
+                  (insight.severity === 'medium' || insight.type === 'info') ? 'bg-fifa-amber' : 
+                  'bg-fifa-green'}`} aria-hidden="true"></div>
               
               <div className="flex justify-between items-start mb-2">
                 <h5 className="font-semibold text-sm text-slate-100">{insight.title}</h5>
@@ -54,12 +54,21 @@ const InsightPanel: React.FC<InsightPanelProps> = ({ insights }) => {
                 {insight.description}
               </p>
               <div className="mt-3 flex gap-2">
-                <button 
-                  className="text-[10px] uppercase font-bold bg-white/5 hover:bg-white/10 px-2 py-1 rounded border border-white/10 transition-colors focus:ring-2 focus:ring-white/50 focus:outline-none"
-                  aria-label={`Execute action: ${insight.title}`}
-                >
-                  Execute
-                </button>
+                {(insight.severity === 'high' || insight.type === 'warning') ? (
+                  <button 
+                    className="text-[10px] uppercase font-bold bg-red-600/20 text-red-400 hover:bg-red-600/40 hover:text-white px-2 py-1 rounded border border-red-500/30 transition-colors focus:ring-2 focus:ring-red-500/50 focus:outline-none animate-pulse"
+                    aria-label={`Execute emergency action: ${insight.title}`}
+                  >
+                    Deploy Emergency Broadcast
+                  </button>
+                ) : (
+                  <button 
+                    className="text-[10px] uppercase font-bold bg-white/5 hover:bg-white/10 px-2 py-1 rounded border border-white/10 transition-colors focus:ring-2 focus:ring-white/50 focus:outline-none"
+                    aria-label={`Execute action: ${insight.title}`}
+                  >
+                    Execute
+                  </button>
+                )}
                 <button 
                   className="text-[10px] uppercase font-bold text-slate-500 hover:text-slate-300 px-2 py-1 transition-colors focus:ring-2 focus:ring-slate-500/50 focus:outline-none"
                   aria-label={`Dismiss action: ${insight.title}`}

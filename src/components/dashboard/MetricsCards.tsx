@@ -1,11 +1,12 @@
 import React from 'react';
-import { Users, Clock, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Users, Clock, AlertTriangle, Leaf } from 'lucide-react';
 
 export interface Metrics {
   occupancy: number;
   avgWaitTime: number;
   incidents: number;
   sentiment: string | number;
+  ecoScore?: number;
 }
 
 interface MetricsCardsProps {
@@ -17,7 +18,7 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics }) => {
     { label: 'Occupancy', value: `${metrics.occupancy}%`, icon: <Users size={20} className="text-fifa-blue" aria-hidden="true" /> },
     { label: 'Avg Wait', value: `${metrics.avgWaitTime}m`, icon: <Clock size={20} className="text-fifa-amber" aria-hidden="true" /> },
     { label: 'Incidents', value: metrics.incidents, icon: <AlertTriangle size={20} className="text-red-400" aria-hidden="true" /> },
-    { label: 'Sentiment', value: metrics.sentiment, icon: <TrendingUp size={20} className="text-fifa-green" aria-hidden="true" /> }
+    { label: 'Eco Score', value: `${metrics.ecoScore || 92}%`, icon: <Leaf size={20} className="text-fifa-green" aria-hidden="true" /> }
   ];
 
   return (
