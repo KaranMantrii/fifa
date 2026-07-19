@@ -81,27 +81,71 @@ export async function simulateLiveMatchData(minute: number) {
   return null;
 }
 
-export function getStaffInsights() {
+export function getStaffInsights(region: 'USA' | 'MEX' | 'CAN' = 'USA') {
+  if (region === 'MEX') {
+    return [
+      {
+        id: "i1-mex",
+        title: "Congestion at Azteca South",
+        description: "AI detects abnormal crowd buildup (95% capacity). Recommend opening overflow lanes A and B immediately to handle domestic arrivals.",
+        severity: "high",
+        time: "Just now"
+      },
+      {
+        id: "i2-mex",
+        title: "Halftime Prediction (MEX vs BRA)",
+        description: "Predicting 45% surge in Akron East concessions during halftime. Suggest reallocating 8 staff members from West Stand to assist.",
+        severity: "medium",
+        time: "5 mins ago"
+      }
+    ];
+  }
+
+  if (region === 'CAN') {
+    return [
+      {
+        id: "i1-can",
+        title: "Transport Flow Optimal",
+        description: "Metro shuttles are clearing the BC Place exit efficiently. Wait times are under 5 minutes.",
+        severity: "low",
+        time: "15 mins ago"
+      },
+      {
+        id: "i2-can",
+        title: "Weather Alert (BMO Field)",
+        description: "Light rain detected approaching BMO Field. Recommend preparing covered walkways at Gates C and D.",
+        severity: "medium",
+        time: "Just now"
+      }
+    ];
+  }
+
   return [
     {
-      id: "i1",
+      id: "i1-usa",
       title: "Congestion at NY/NJ Gate 3",
       description: "AI detects abnormal crowd buildup (98% capacity). Recommend opening overflow lanes A and B immediately to handle international arrivals.",
       severity: "high",
       time: "Just now"
     },
     {
-      id: "i2",
+      id: "i2-usa",
       title: "Halftime Prediction (USA vs ENG)",
       description: "Predicting 35% surge in MetLife North Stand concessions during halftime. Suggest reallocating 5 staff members from West Stand to assist.",
       severity: "medium",
       time: "2 mins ago"
     },
-    { id: 3, type: 'success', title: 'Transport Flow Optimal', time: '15 mins ago', description: 'Metro shuttles are clearing the East exit efficiently. Wait times are under 5 minutes.' },
+    { id: "i3-usa", type: 'success', severity: 'low', title: 'Transport Flow Optimal', time: '15 mins ago', description: 'Metro shuttles are clearing the East exit efficiently. Wait times are under 5 minutes.' },
   ];
 }
 
-export function getStadiumMetrics() {
+export function getStadiumMetrics(region: 'USA' | 'MEX' | 'CAN' = 'USA') {
+  if (region === 'MEX') {
+    return { occupancy: 85, avgWaitTime: 8.5, incidents: 4, sentiment: 'Neutral', ecoScore: 84 };
+  }
+  if (region === 'CAN') {
+    return { occupancy: 62, avgWaitTime: 3.1, incidents: 0, sentiment: 'Excellent', ecoScore: 98 };
+  }
   return {
     occupancy: 78,
     avgWaitTime: 4.2,

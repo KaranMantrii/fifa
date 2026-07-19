@@ -63,10 +63,10 @@ export default function StaffDashboard() {
 
   useEffect(() => {
     // Initial fetch (this may change to API call in real app)
-    const initialInsights = getStaffInsights() as unknown as Insight[];
+    const initialInsights = getStaffInsights(region) as unknown as Insight[];
     setInsights(initialInsights);
     
-    const initialMetrics = getStadiumMetrics() as unknown as Metrics;
+    const initialMetrics = getStadiumMetrics(region) as unknown as Metrics;
     setMetrics(initialMetrics);
 
     // Initialize Mock WebSocket for push-based architecture
@@ -143,6 +143,10 @@ export default function StaffDashboard() {
     setRegion(newRegion);
     setStadiumData(getStadiumDataForRegion(newRegion));
     setSelectedSector(null);
+    
+    // Update metrics and insights based on region
+    setInsights(getStaffInsights(newRegion) as unknown as Insight[]);
+    setMetrics(getStadiumMetrics(newRegion) as unknown as Metrics);
   };
 
   if (!metrics) return null;
