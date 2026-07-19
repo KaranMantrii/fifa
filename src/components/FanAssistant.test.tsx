@@ -64,9 +64,8 @@ describe('FanAssistant component', () => {
       fireEvent.change(input, { target: { value: xssPayload } });
       fireEvent.click(sendBtn);
 
-      // DOMPurify strips the img tag completely in this case, leaving empty string
-      // or just harmless text. We'll wait for the mock response to ensure flow completes
-      expect(await screen.findByText('Mock AI Response')).toBeInTheDocument();
+      // Zod validation should reject it before it even reaches the AI
+      expect(await screen.findByText('Error: HTML tags are not allowed')).toBeInTheDocument();
       
       // The DOM should not contain the raw unescaped img tag
       const chatRegion = screen.getByRole('region', { name: /Fan Assistant Chat/i });

@@ -58,7 +58,7 @@ describe('App component', () => {
     });
     
     // Logout button should now be visible
-    const logoutBtn = screen.getByRole('button', { name: /Logout from Staff Dashboard/i });
+    const logoutBtn = screen.getByRole('button', { name: /app.logout/i });
     expect(logoutBtn).toBeInTheDocument();
     
     // Click logout
