@@ -59,7 +59,7 @@ interface WorkerResponse {
 class WorkerMock {
   url: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onmessage: ((ev: any) => void) | null = null;
+  onmessage: ((ev: MessageEvent) => void) | null = null;
   listeners: Record<string, Function[]> = {};
 
   constructor(stringUrl: string) {
@@ -91,18 +91,16 @@ class WorkerMock {
   
   terminate() {}
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  addEventListener(event: string, callback: any) {
+  addEventListener(event: string, callback: EventListenerOrEventListenerObject) {
     if (!this.listeners[event]) this.listeners[event] = [];
     this.listeners[event].push(callback);
   }
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  removeEventListener(event: string, callback: any) {
+  removeEventListener(event: string, callback: EventListenerOrEventListenerObject) {
     if (this.listeners[event]) {
       this.listeners[event] = this.listeners[event].filter((cb: unknown) => cb !== callback);
     }
   }
 }
 
-(window as any).Worker = WorkerMock;
+(window as unknown as { Worker: typeof WorkerMock }).Worker = WorkerMock;

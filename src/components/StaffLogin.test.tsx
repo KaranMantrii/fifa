@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import StaffLogin from './StaffLogin';
@@ -17,7 +16,7 @@ describe('StaffLogin component', () => {
   });
 
   it('displays error on failed login', async () => {
-    authService.login.mockRejectedValueOnce(new Error('Invalid credentials.'));
+    vi.mocked(authService.login).mockRejectedValueOnce(new Error('Invalid credentials.'));
     
     render(<StaffLogin onLogin={() => {}} />);
     
@@ -33,7 +32,7 @@ describe('StaffLogin component', () => {
   it('calls onLogin on successful login', async () => {
     const mockOnLogin = vi.fn();
     const mockUser = { username: 'admin', role: 'admin' };
-    authService.login.mockResolvedValueOnce({ token: 'test-token', user: mockUser });
+    vi.mocked(authService.login).mockResolvedValueOnce({ token: 'test-token', user: mockUser as any });
     
     render(<StaffLogin onLogin={mockOnLogin} />);
     

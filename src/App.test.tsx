@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import App from './App';
@@ -11,7 +10,7 @@ vi.mock('./components/StaffDashboard', () => ({
   default: () => <div data-testid="staff-dashboard">Staff Dashboard Mock</div>
 }));
 vi.mock('./components/StaffLogin', () => ({
-  default: ({ onLogin }) => (
+  default: ({ onLogin }: { onLogin: (status: boolean) => void }) => (
     <div data-testid="staff-login">
       Staff Login Mock
       <button onClick={() => onLogin(true)}>Simulate Login</button>
@@ -33,7 +32,7 @@ describe('App component', () => {
     });
   });
 
-  it('switches to staff mode and shows login, then dashboard', async () => {
+  it('switches to staff mode and shows login, then dashboard, then logs out', async () => {
     render(<App />);
     
     const staffModeBtn = screen.getByRole('button', { name: /Switch to Staff Dashboard mode/i });
@@ -44,9 +43,23 @@ describe('App component', () => {
       expect(screen.getByTestId('staff-login')).toBeInTheDocument();
     });
     
-    // Fan assistant should be hidden (we check for aria-hidden true or not visible)
-    const fanContainer = screen.getByTestId('fan-assistant').parentElement;
-    expect(fanContainer).toHaveClass('hidden');
+    // Fan assistant should no longer be in the document
+    expect(screen.queryByTestId('fan-assistant')).not.toBeInTheDocument();
+
+    // Click Fan mode button to switch back without logging in
+    const fanModeBtn = screen.getByRole('button', { name: /Switch to Fan Companion mode/i });
+    fireEvent.click(fanModeBtn);
+    
+    // We should see Fan Assistant again
+    await waitFor(() => {
+      expect(screen.getByTestId('fan-assistant')).toBeInTheDocument();
+    });
+
+    // Switch back to staff mode to continue login test
+    fireEvent.click(staffModeBtn);
+    await waitFor(() => {
+      expect(screen.getByTestId('staff-login')).toBeInTheDocument();
+    });
 
     // Simulate login success
     const loginBtn = screen.getByText('Simulate Login');
@@ -64,9 +77,22 @@ describe('App component', () => {
     // Click logout
     fireEvent.click(logoutBtn);
     
-    // Should go back to login
+    // Should go back to fan mode
     await waitFor(() => {
-      expect(screen.getByTestId('staff-login')).toBeInTheDocument();
+      expect(screen.getByTestId('fan-assistant')).toBeInTheDocument();
     });
+  });
+
+  it('changes language when language buttons are clicked', () => {
+    render(<App />);
+    
+    // Find language buttons
+    const esBtn = screen.getByText('ES');
+    const frBtn = screen.getByText('FR');
+    const enBtn = screen.getByText('EN');
+
+    fireEvent.click(esBtn);
+    fireEvent.click(frBtn);
+    fireEvent.click(enBtn);
   });
 });

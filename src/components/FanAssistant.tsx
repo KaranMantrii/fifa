@@ -61,7 +61,13 @@ export default function FanAssistant() {
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
-    workerRef.current = new SimulationWorker();
+    if (typeof Worker !== 'undefined') {
+      try {
+        workerRef.current = new SimulationWorker();
+      } catch (e) {
+        console.warn('Worker initialization failed', e);
+      }
+    }
     return () => {
       workerRef.current?.terminate();
     };
@@ -94,7 +100,9 @@ export default function FanAssistant() {
   }, []);
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: 'end' });
+    }, 50);
   }, []);
 
   useEffect(() => {

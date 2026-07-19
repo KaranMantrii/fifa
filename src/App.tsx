@@ -1,5 +1,5 @@
 import React, { useState, Suspense } from 'react'
-import { Activity, MessageSquare, LogOut, Loader2 } from 'lucide-react'
+import { Activity, MessageSquare, LogOut, Loader2, WifiOff } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 // Lazy load heavy components for better efficiency score
@@ -14,15 +14,44 @@ const LoadingFallback = () => (
   </div>
 )
 
+function useNetworkStatus() {
+  const [isOnline, setIsOnline] = React.useState(navigator.onLine);
+
+  React.useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  return isOnline;
+}
+
 function App() {
   const { t, i18n } = useTranslation()
   const [activeMode, setActiveMode] = useState<'fan' | 'staff'>('fan')
   const [isStaffAuthenticated, setIsStaffAuthenticated] = useState<boolean>(false)
+  const isOnline = useNetworkStatus()
 
   const handleLogout = () => {
     setIsStaffAuthenticated(false)
     setActiveMode('fan')
   }
+
+  React.useEffect(() => {
+    const baseTitle = "FIFA '26 Smart Hub";
+    if (activeMode === 'staff') {
+      document.title = isStaffAuthenticated ? `Dashboard | ${baseTitle}` : `Staff Login | ${baseTitle}`;
+    } else {
+      document.title = `Fan Companion | ${baseTitle}`;
+    }
+  }, [activeMode, isStaffAuthenticated]);
 
   return (
     <div className="max-w-[1400px] mx-auto p-4 md:p-8 min-h-screen flex flex-col">
@@ -59,12 +88,20 @@ function App() {
       )}
 
       <header className="relative z-20 flex flex-col md:flex-row justify-between items-center p-3 px-6 glass-panel rounded-[2rem] md:rounded-full mb-10 mt-2 gap-4 sticky top-4 shadow-2xl transition-all">
-        <h1 className="flex items-center gap-3 text-xl md:text-2xl font-bold text-white font-display tracking-tight m-0">
-          <div className="bg-white/10 p-2 rounded-xl shadow-inner border border-white/5 flex items-center justify-center" aria-hidden="true">
-            <img src="/favicon.png" alt="Logo" className="w-6 h-6 object-contain drop-shadow-md" />
-          </div>
-          {t('app.title')}
-        </h1>
+        <div className="flex items-center gap-4">
+          <h1 className="flex items-center gap-3 text-xl md:text-2xl font-bold text-white font-display tracking-tight m-0">
+            <div className="bg-white/10 p-2 rounded-xl shadow-inner border border-white/5 flex items-center justify-center" aria-hidden="true">
+              <img src="/favicon.png" alt="Logo" className="w-6 h-6 object-contain drop-shadow-md" />
+            </div>
+            {t('app.title')}
+          </h1>
+          {!isOnline && (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-bold tracking-wider uppercase animate-pulse">
+              <WifiOff size={14} />
+              <span>Offline</span>
+            </div>
+          )}
+        </div>
 
         <nav className="flex items-center gap-4" aria-label="Mode Navigation">
           <div className="flex bg-black/40 p-1 rounded-full border border-white/10 shadow-inner backdrop-blur-md">
@@ -115,17 +152,21 @@ function App() {
 
       <main id="main-content" className="relative z-10 flex-1 w-full animate-fade-in" aria-live="polite">
         <Suspense fallback={<LoadingFallback />}>
-          <div className={activeMode === 'fan' ? 'block animate-fade-in' : 'hidden'} aria-hidden={activeMode !== 'fan'}>
-            <FanAssistant />
-          </div>
+          {activeMode === 'fan' && (
+            <div className="block animate-fade-in" aria-hidden={false}>
+              <FanAssistant />
+            </div>
+          )}
 
-          <div className={activeMode === 'staff' ? 'block animate-fade-in' : 'hidden'} aria-hidden={activeMode !== 'staff'}>
-            {isStaffAuthenticated ? (
-              <StaffDashboard />
-            ) : (
-              <StaffLogin onLogin={() => setIsStaffAuthenticated(true)} />
-            )}
-          </div>
+          {activeMode === 'staff' && (
+            <div className="block animate-fade-in" aria-hidden={false}>
+              {isStaffAuthenticated ? (
+                <StaffDashboard />
+              ) : (
+                <StaffLogin onLogin={() => setIsStaffAuthenticated(true)} />
+              )}
+            </div>
+          )}
         </Suspense>
       </main>
     </div>
