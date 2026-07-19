@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import StaffDashboard from './StaffDashboard';
 
 // No fake timers to allow async testing library to poll correctly
@@ -12,7 +12,7 @@ describe('StaffDashboard component integration', () => {
   it('renders initial dashboard structure', async () => {
     render(<StaffDashboard />);
     // Check main sections are present
-    expect(await screen.findByText(/Live Interactive Stadium Map/i)).toBeInTheDocument();
+    expect(await screen.findByText(/FIFA World Cup 26/i)).toBeInTheDocument();
     expect(await screen.findByText(/Recommended Actions/i)).toBeInTheDocument();
   });
 
@@ -20,25 +20,25 @@ describe('StaffDashboard component integration', () => {
     render(<StaffDashboard />);
     
     // With real timers, just wait for the first render to complete
-    expect(await screen.findByText(/Live Interactive Stadium Map/i)).toBeInTheDocument();
+    expect(await screen.findByText(/FIFA World Cup 26/i)).toBeInTheDocument();
   });
 
   it('can select a sector from the map and view details', async () => {
     render(<StaffDashboard />);
     
-    // Assuming StadiumMap renders "North Stand"
-    const northSector = await screen.findByRole('button', { name: /North Stand/i });
+    // Assuming StadiumMap renders "MetLife North"
+    const northSector = await screen.findByRole('button', { name: /MetLife North/i });
     fireEvent.click(northSector);
 
     // Verify SectorDetails panel opens or reflects the selection
-    expect(screen.getAllByText(/North Stand/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/MetLife North/i).length).toBeGreaterThan(0);
   });
 
   it('can open and close the camera modal', async () => {
     render(<StaffDashboard />);
     
     // Select a sector first to see cameras
-    const northSector = await screen.findByRole('button', { name: /North Stand/i });
+    const northSector = await screen.findByRole('button', { name: /MetLife North/i });
     fireEvent.click(northSector);
 
     // Find the camera button in the details panel

@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { getStaffInsights, getStadiumMetrics } from '../services/aiSim';
 import InsightPanel, { Insight } from './dashboard/InsightPanel';
 import MetricsCards, { Metrics } from './dashboard/MetricsCards';
@@ -9,7 +8,6 @@ import CameraModal from './dashboard/CameraModal';
 import { MockWebSocket } from '../services/wsSim';
 
 export default function StaffDashboard() {
-  const { t } = useTranslation();
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [insights, setInsights] = useState<Insight[]>([]);
   const [selectedSector, setSelectedSector] = useState<SectorData | null>(null);
@@ -17,10 +15,10 @@ export default function StaffDashboard() {
   const [showCameras, setShowCameras] = useState<boolean>(false);
 
   const [stadiumData, setStadiumData] = useState<StadiumData>({
-    north: { id: 'north', name: 'North Stand', occupancy: 65, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '2m' },
-    south: { id: 'south', name: 'South Stand', occupancy: 85, status: 'Busy', color: '#f59e0b', incidents: 1, waitTime: '8m' },
-    east:  { id: 'east', name: 'East Stand', occupancy: 95, status: 'Alert', color: '#ef4444', incidents: 2, waitTime: '15m' },
-    west:  { id: 'west', name: 'West Stand', occupancy: 55, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
+    north: { id: 'north', name: 'MetLife North (NY/NJ)', occupancy: 65, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '2m' },
+    south: { id: 'south', name: 'MetLife South', occupancy: 85, status: 'Busy', color: '#f59e0b', incidents: 1, waitTime: '8m' },
+    east:  { id: 'east', name: 'Azteca East (MEX)', occupancy: 95, status: 'Alert', color: '#ef4444', incidents: 2, waitTime: '15m' },
+    west:  { id: 'west', name: 'BMO Field West (TOR)', occupancy: 55, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '1m' },
     g1:    { id: 'g1', name: 'Gate 1', occupancy: 30, status: 'Optimal', color: '#10b981', incidents: 0, waitTime: '0m' },
     g2:    { id: 'g2', name: 'Gate 2', occupancy: 70, status: 'Busy', color: '#f59e0b', incidents: 0, waitTime: '5m' },
     g3:    { id: 'g3', name: 'Gate 3', occupancy: 98, status: 'Alert', color: '#ef4444', incidents: 1, waitTime: '22m' },
@@ -126,7 +124,11 @@ export default function StaffDashboard() {
         {/* Stadium Map Visualization */}
         <div className="flex-1 glass-panel rounded-[1.5rem] p-6 md:p-8 flex flex-col relative shadow-2xl">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="font-bold text-xl font-display tracking-tight text-white">{t('dashboard.stadiumMap')}</h3>
+            {/* FIFA 26 specific context */}
+            <div>
+              <h3 className="font-bold text-xl font-display tracking-tight text-white">FIFA World Cup 26™ Global Command Center</h3>
+              <p className="text-slate-400 text-sm mt-1">Cross-border Venue Analytics & Security Overview</p>
+            </div>
             <div className="flex gap-4 text-xs font-bold text-slate-300" aria-hidden="true">
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-fifa-green shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span> Optimal</span>
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-fifa-amber shadow-[0_0_8px_rgba(245,158,11,0.6)]"></span> Busy</span>

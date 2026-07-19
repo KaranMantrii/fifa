@@ -42,6 +42,20 @@ vi.mock('react-i18next', () => ({
 }));
 
 // Mock Worker
+interface WorkerMessage {
+  id: number;
+  type: string;
+  payload?: Record<string, unknown>;
+}
+
+interface WorkerResponse {
+  data: {
+    id: number;
+    type?: string;
+    data?: unknown;
+  };
+}
+
 class WorkerMock {
   url: string;
   onmessage: any;
@@ -52,10 +66,10 @@ class WorkerMock {
     this.onmessage = () => {};
   }
   
-  postMessage(msg: any) {
+  postMessage(msg: WorkerMessage) {
     // Immediately invoke the mocked response using microtask so findByText works
     Promise.resolve().then(() => {
-      const responseEvent: any = { data: { id: msg.id } };
+      const responseEvent: WorkerResponse = { data: { id: msg.id } };
       
       if (msg.type === 'AI_CHAT') {
         responseEvent.data.type = 'AI_CHAT_RESULT';

@@ -2,6 +2,7 @@ import React, { Component, ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
+  fallback?: ReactNode;
 }
 
 interface ErrorBoundaryState {
@@ -27,8 +28,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return (
+      // You can render a custom fallback UI
+      return this.props.fallback || (
         <div className="flex items-center justify-center min-h-screen bg-slate-950 text-white font-sans p-4" role="alert" aria-live="assertive">
           <div className="bg-red-900/50 border border-red-500 rounded-xl p-8 max-w-lg text-center">
             <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>

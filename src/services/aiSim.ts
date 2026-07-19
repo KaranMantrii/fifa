@@ -43,20 +43,17 @@ export async function simulateAIResponse(message: string): Promise<string> {
   if (lowerMsg.includes('food') || lowerMsg.includes('eat')) {
     return "The nearest food concession is 'Gaucho Grill' near Section 112 (approx. 2 min walk). Wait time is currently very short (under 5 mins). Would you like me to guide you there?";
   }
-  
   if (lowerMsg.includes('bathroom') || lowerMsg.includes('restroom') || lowerMsg.includes('toilet')) {
-    return "There is a restroom facility located right behind Section 114. According to our crowd sensors, it's currently at 40% capacity with no queue.";
+    return "The closest restrooms are located near Gate 4 and Gate 5. Gate 4 currently has a 3-minute wait. Would you like a route map?";
   }
-  
-  if (lowerMsg.includes('gate') || lowerMsg.includes('queue') || lowerMsg.includes('wait')) {
-    return "Gate 3 is currently experiencing heavy traffic (Alert level: 98%). I recommend using Gate 4 which has an estimated wait time of less than 2 minutes.";
+  if (lowerMsg.includes('merch') || lowerMsg.includes('shop') || lowerMsg.includes('store')) {
+    return "The official FIFA World Cup 26™ Superstore is located by the North Plaza. We also have express kiosks at Sections 105 and 209.";
   }
-  
-  if (lowerMsg.includes('downtown') || lowerMsg.includes('transport') || lowerMsg.includes('leave')) {
-    return "The fastest way downtown right now is via the Metro (Green Line) from the East Station. Trains are running every 4 minutes. I suggest leaving through Gate 2 to avoid the crowds at the main exit.";
+  if (lowerMsg.includes('festival') || lowerMsg.includes('fan')) {
+    return "The official FIFA Fan Festival™ is happening downtown! Shuttles depart every 10 minutes from the East Transport Hub just outside the stadium.";
   }
-  
-  return "I'm monitoring the live situation across the stadium. I can help you find the shortest queues for food, locate the nearest facilities, or provide real-time transport advice. What do you need?";
+
+  return "I'm your FIFA '26 Assistant! I can help you find food, merchandise, restrooms, or navigate the stadium. How can I assist you today?";
 }
 
 export async function simulateLiveMatchData(minute: number) {
@@ -83,8 +80,20 @@ export async function simulateLiveMatchData(minute: number) {
 
 export function getStaffInsights() {
   return [
-    { id: 1, type: 'warning', title: 'Congestion at Gate 3', time: 'Just now', description: 'AI detects abnormal crowd buildup (98% capacity). Recommend opening overflow lanes A and B immediately.' },
-    { id: 2, type: 'info', title: 'Halftime Prediction', time: '2 mins ago', description: 'Predicting 35% surge in North Stand concessions based on current match tension. Advise staff reallocation.' },
+    {
+      id: "i1",
+      title: "Congestion at NY/NJ Gate 3",
+      description: "AI detects abnormal crowd buildup (98% capacity). Recommend opening overflow lanes A and B immediately to handle international arrivals.",
+      severity: "high",
+      time: "Just now"
+    },
+    {
+      id: "i2",
+      title: "Halftime Prediction (USA vs ENG)",
+      description: "Predicting 35% surge in MetLife North Stand concessions during halftime. Suggest reallocating 5 staff members from West Stand to assist.",
+      severity: "medium",
+      time: "2 mins ago"
+    },
     { id: 3, type: 'success', title: 'Transport Flow Optimal', time: '15 mins ago', description: 'Metro shuttles are clearing the East exit efficiently. Wait times are under 5 minutes.' },
   ];
 }

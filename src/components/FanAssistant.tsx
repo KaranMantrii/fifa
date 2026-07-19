@@ -8,8 +8,8 @@ import fifaBg from '../../Assets/fifa.png';
 
 const SUGGESTIONS = [
   { icon: <Coffee size={14} aria-hidden="true" />, text: "Where's the nearest food?" },
-  { icon: <MapPin size={14} aria-hidden="true" />, text: "Fastest way back downtown?" },
-  { icon: <Info size={14} aria-hidden="true" />, text: "Queue time for Gate 4?" }
+  { icon: <MapPin size={14} aria-hidden="true" />, text: "Where is the FIFA Fan Festival™?" },
+  { icon: <Info size={14} aria-hidden="true" />, text: "Where can I buy official merch?" }
 ];
 
 // Zod Schema for strict input validation
@@ -54,7 +54,7 @@ export default function FanAssistant() {
   const [isTyping, setIsTyping] = useState(false);
   const [matchMinute, setMatchMinute] = useState(0);
   const [matchData, setMatchData] = useState({
-    homeTeamCode: "ESP", awayTeamCode: "ARG", homeScore: 0, awayScore: 0, event: "The Final kicks off!"
+    homeTeamCode: "USA", awayTeamCode: "MEX", homeScore: 0, awayScore: 0, event: "Welcome to the World Cup!"
   });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -175,13 +175,10 @@ export default function FanAssistant() {
               </div>
 
               <div>
-                <h2 className="font-bold text-white text-lg font-display tracking-tight">{t('assistant.stadiumAssistant')}</h2>
+                <h2 className="font-bold text-white text-lg font-display tracking-tight">FIFA '26 AI Assistant</h2>
                 <p className="text-xs font-medium text-emerald-400 flex items-center gap-1.5 mt-0.5">
-                  <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
-                  </span>
-                  {t('assistant.online')}
+                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" aria-hidden="true"></span>
+                  Connected to MetLife Stadium Node
                 </p>
               </div>
             </div>
